@@ -25,6 +25,8 @@ namespace Minesweeper
         static bool DidWin = false;
         static int Minutes;
 
+        static int FlagsCorrect;
+
         static int TilesPressed;
         
         static void Main(string[] args)
@@ -75,8 +77,8 @@ namespace Minesweeper
                         CheckKey();
                     }
                 case 4: //Custom
-                    Console.Write("Width? (min 2, max 50): ");
-                    Width = ValidInput(2, 50);
+                    Console.Write("Width? (min 2, max 40): ");
+                    Width = ValidInput(2, 40);
                     Console.Write("Height? (min 2, max 40): ");
                     Height = ValidInput(2, 40);
                     Console.Write($"Amount of bombs? (max {(Width * Height) - 1}): ");
@@ -210,6 +212,8 @@ namespace Minesweeper
         }
         static void InitializeBoard(int width, int height)
         {
+            Timer.Restart();
+            FlagsCorrect = 0;
             PressedCoords = new List<(int, int)>();
             Board = new char[width, height];
             for (int y = 0; y < height; y++)
@@ -287,6 +291,7 @@ namespace Minesweeper
                                     {
                                         Console.BackgroundColor = ConsoleColor.Cyan;
                                         Console.ForegroundColor = ConsoleColor.Black;
+                                        FlagsCorrect++;
                                     }
                                     else if (item.Item1 == X && item.Item2 == Y)
                                     {
@@ -309,6 +314,11 @@ namespace Minesweeper
                     {
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.Blue;
+                        if (x == X && y == Y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.White;
+                        }
                     }
                     else if (x == X && y == Y)
                     {
@@ -335,6 +345,12 @@ namespace Minesweeper
                 Console.WriteLine();
                 Console.WriteLine("You lost!");
                 Console.WriteLine();
+                Console.WriteLine($"Non-bomb tiles pressed: {TilesPressed} / {(Board.GetLength(0) * Board.GetLength(1))-BombAmount}");
+                Console.WriteLine();
+                Console.WriteLine($"Flags placed: {BombAmount - FlagAmount} / {BombAmount}");
+                Console.WriteLine($"Flags correct: {FlagsCorrect} / {BombAmount - FlagAmount}");
+                Console.WriteLine($"Flags wrong: {BombAmount-FlagAmount-FlagsCorrect} / {BombAmount - FlagAmount}");
+                Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.ReadKey();
@@ -353,7 +369,13 @@ namespace Minesweeper
             if (DidWin)
             {
                 Console.WriteLine();
-                Console.WriteLine("You won!");
+                Console.WriteLine("Yippee!");
+                Console.WriteLine();
+                Console.WriteLine($"Non-bomb tiles pressed: {TilesPressed} / {(Board.GetLength(0) * Board.GetLength(1)) - BombAmount}");
+                Console.WriteLine();
+                Console.WriteLine($"Flags placed: {BombAmount - FlagAmount} / {BombAmount}");
+                Console.WriteLine($"Flags correct: {FlagsCorrect} / {BombAmount - FlagAmount}");
+                Console.WriteLine($"Flags wrong: {BombAmount - FlagAmount - FlagsCorrect} / {BombAmount - FlagAmount}");
                 Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -376,9 +398,9 @@ namespace Minesweeper
         {
             Console.CursorVisible = true;
             Console.WriteLine("Select difficulty");
-            Console.WriteLine("1. Easy (11x11, 13 bombs)"); //DISPLAY AMOUNT OF BOMBS
-            Console.WriteLine("2. Medium (17x17, 45 bombs)");
-            Console.WriteLine("3. Hard (24x24, 100 bombs)");
+            Console.WriteLine("1. Easy (11x11, 15 bombs)"); //DISPLAY AMOUNT OF BOMBS
+            Console.WriteLine("2. Medium (17x17, 50 bombs)");
+            Console.WriteLine("3. Hard (24x24, 150 bombs)");
             Console.WriteLine("4. Custom");
             Console.WriteLine("5. How to play");
             Console.WriteLine();
