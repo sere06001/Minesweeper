@@ -55,7 +55,7 @@ namespace Minesweeper
                     }
 
                 case 2: //Medium
-                    BombAmount = 50;
+                    BombAmount = 40;
                     Width = 17;
                     Height = 17;
                     InitializeBoard(Width, Height);
@@ -66,7 +66,7 @@ namespace Minesweeper
                         CheckKey();
                     }
                 case 3: //Hard
-                    BombAmount = 150;
+                    BombAmount = 100;
                     Width = 24;
                     Height = 24;
                     InitializeBoard(Width, Height);
@@ -400,8 +400,8 @@ namespace Minesweeper
             Console.CursorVisible = true;
             Console.WriteLine("Select difficulty");
             Console.WriteLine("1. Easy (11x11, 15 bombs)"); //DISPLAY AMOUNT OF BOMBS
-            Console.WriteLine("2. Medium (17x17, 50 bombs)");
-            Console.WriteLine("3. Hard (24x24, 150 bombs)");
+            Console.WriteLine("2. Medium (17x17, 40 bombs)");
+            Console.WriteLine("3. Hard (24x24, 100 bombs)");
             Console.WriteLine("4. Custom");
             Console.WriteLine("5. How to play");
             Console.WriteLine();
