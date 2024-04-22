@@ -95,7 +95,7 @@ namespace Minesweeper
                 case 5: //Rules
                     Console.CursorVisible = false;
                     Console.WriteLine($"Navigate with WASD or Arrow keys.");
-                    Console.WriteLine($"Press {PressKey} to click a square.");
+                    Console.WriteLine($"Press Space or {PressKey} to click a square.");
                     Console.WriteLine("If you click on a bomb you die.");
                     Console.WriteLine();
                     Console.WriteLine("Flags are used to mark bombs but are not necessary to win.");
@@ -213,6 +213,7 @@ namespace Minesweeper
         static void InitializeBoard(int width, int height)
         {
             Timer.Restart();
+            Minutes = 0;
             FlagsCorrect = 0;
             PressedCoords = new List<(int, int)>();
             Board = new char[width, height];
@@ -444,6 +445,36 @@ namespace Minesweeper
                                 {
                                     IsDead = true;
                                     
+                                }
+                            }
+                        }
+                        if (!IsDead)
+                        {
+                            Board[X, Y] = CheckAdjacent();
+                            PressedCoords.Add((X, Y));
+                            TilesPressed++;
+                        }
+                        else
+                        {
+                            CheckAdjacentAny();
+                        }
+
+                        Console.Clear(); //These are just so board doesn't update on any key but only on specific keys
+                        DrawBoard();
+                        break;
+                    case ConsoleKey.Spacebar:
+                        if (Board[X, Y] == 'F')
+                        {
+                            break;
+                        }
+                        foreach (var item in BombCoords)
+                        {
+                            if (item.Item1 == X)
+                            {
+                                if (item.Item2 == Y)
+                                {
+                                    IsDead = true;
+
                                 }
                             }
                         }
